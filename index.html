@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Object Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .video-container {
+            display: inline-block;
+            border: 4px solid #4CAF50;
+            border-radius: 8px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        img {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: #777;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Object Detection Live Stream</h1>
+    
+    <div class="video-container">
+        <div class="loader" id="loader"></div>
+        <img id="videoStream" src="{{ url_for('video_feed') }}" onload="hideLoader()" onerror="retryStream()" alt="Loading video...">
+    </div>
+
+    <footer>
+        &copy; 2025 Object Detection System | Built with Flask & OpenCV
+    </footer>
+
+    <script>
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function retryStream() {
+            setTimeout(() => {
+                document.getElementById('videoStream').src = "{{ url_for('video_feed') }}" + '?t=' + new Date().getTime();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
